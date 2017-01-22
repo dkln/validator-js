@@ -1,5 +1,5 @@
 {
-  "name": "validator-js",
+  "name": "validator-lib",
   "version": "0.0.1",
   "description": "Validator class for form validation",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/dkln/validator-js.git"
+    "url": "git+ssh://git@github.com/dkln/validator-lib.git"
   },
   "keywords": [
     "validation",
@@ -19,9 +19,9 @@
   "author": "Diederick Lawson",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dkln/validator-js/issues"
+    "url": "https://github.com/dkln/validator-lib/issues"
   },
-  "homepage": "https://github.com/dkln/validator-js#readme",
+  "homepage": "https://github.com/dkln/validator-lib#readme",
   "dependencies": {
     "babel-core": "~6",
     "babel-preset-es2015": "^6",

@@ -1,18 +1,19 @@
-Validator JS
-============
+Validator-lib
+=============
 
 Validations for objects. Can be used to validate form inputs and such.
+_Doc is WIP._
 
 ## Installation
 
 ```
-npm install validator-js
+npm install validator-lib
 ```
 
 ### How to use
 
 ```javascript
-import Validator from "validator-js";
+import Validator from "validator-lib";
 
 var data = {
   person: {
@@ -71,3 +72,10 @@ validator.validate();
 * `if`: Contains function that determines if the rule should be ran
 * `on`: Only runs rule when the given event matches
 * `allowBlank`: Allows blank values
+
+### Validator methods
+
+* `isValid()`
+* `isFieldValid(fieldName)`
+* `getErrorMessages()`
+* `getErrorMessagesForField(fieldName)`
