@@ -2,15 +2,7 @@ var trim = require("trim");
 var isArray = require("isarray");
 var ObjectPath = require("object-path");
 
-const VALIDATORS = [
-  "required",
-  "number",
-  "length",
-  "format",
-  "email"
-];
-
-const VALIDATOR_FUNCTIONS = {
+const VALIDATORS = {
   required: function(value) {
     return isPresent(value);
   },
@@ -36,6 +28,10 @@ const VALIDATOR_FUNCTIONS = {
 
     return valid;
   },
+
+  format: function(value, options) {
+    return (value || "").toString().match(options.match) != null;
+  }
 }
 
 
@@ -69,7 +65,7 @@ export default class {
         if(!this.results[field])
           this.results[field] = {};
 
-        this.results[field][index] = isFieldValid(rule, this.data, field, fieldValue);
+        this.results[field][index] = isFieldValid(rule, this.data, fieldValue);
       });
     });
   }
@@ -148,12 +144,12 @@ function skipRuleOnField(rule, field, fieldValue) {
   return rule.allowBlank && !isPresent(fieldValue);
 }
 
-function isFieldValid(rule, data, field, value) {
+function isFieldValid(rule, data, value) {
   if(rule.validator == "custom") {
     return rule.validation(data);
 
-  } else if(VALIDATOR_FUNCTIONS[rule.validator]) {
-    return VALIDATOR_FUNCTIONS[rule.validator](value, rule);
+  } else if(VALIDATORS[rule.validator]) {
+    return VALIDATORS[rule.validator](value, rule);
 
   } else {
     throw `Unknown validator ${rule.validator}`;

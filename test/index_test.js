@@ -198,7 +198,86 @@ describe("Validator", function() {
         subject.validate();
         subject.isValid().should.equal(true);
       });
+    });
 
+    describe("Format", function() {
+      let data = {
+        company: {
+        }
+      }
+
+      let rules = [
+        {
+          validator: "format",
+          fields: [ "company.vatNumber" ],
+          match: /^NL[0-9]{10}$/
+        }
+      ]
+
+      let subject = new Validator(rules, data);
+
+      it("validates null", function() {
+        subject.validate();
+        subject.isValid().should.equal(false);
+      });
+
+      it("validates empty string", function() {
+        data.company.vatNumber = "";
+
+        subject.validate();
+        subject.isValid().should.equal(false);
+      });
+
+      it("validates correct format", function() {
+        data.company.vatNumber = "NL1234567890";
+
+        subject.validate();
+        subject.isValid().should.equal(true);
+      });
+
+      it("validates correct format", function() {
+        data.company.vatNumber = "BE1234567890";
+
+        subject.validate();
+        subject.isValid().should.equal(false);
+      });
+    });
+
+    describe("Custom", function() {
+      let data = {
+        company: {}
+      }
+
+      let rules = [
+        {
+          validator: "custom",
+          fields: [ "company.idNumber" ],
+          validation: function(data) {
+            return data.company.idNumber > 10 && data.company.idNumber / 4 == 5;
+          }
+        }
+      ]
+
+      let subject = new Validator(rules, data);
+
+      it("validates incorrectly", function() {
+        data.company.idNumber = 9;
+
+        subject.validate();
+        subject.isValid().should.equal(false);
+
+        data.company.idNumber = 11;
+
+        subject.validate();
+        subject.isValid().should.equal(false);
+      });
+
+      it("validates correctly", function() {
+        data.company.idNumber = 20;
+
+        subject.validate();
+        subject.isValid().should.equal(true);
+      });
     });
   });
 });
