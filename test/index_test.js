@@ -21,9 +21,9 @@ describe("Validator", function() {
       let subject = new Validator(rules, data);
 
       subject.validate();
-      subject.isValid().should == true;
-      subject.isFieldValid('person.firstName').should == true;
-      subject.isFieldValid('person.lastName').should == true;
+      subject.isValid().should.equal(true);
+      subject.isFieldValid('person.firstName').should.equal(true);
+      subject.isFieldValid('person.lastName').should.equal(true);
     });
 
     it("validates falsey", function() {
@@ -37,9 +37,9 @@ describe("Validator", function() {
       let subject = new Validator(rules, data);
 
       subject.validate();
-      subject.isValid().should == false;
-      subject.isFieldValid('person.firstName').should == false;
-      subject.isFieldValid('person.lastName').should == false;
+      subject.isValid().should.equal(false);
+      subject.isFieldValid('person.firstName').should.equal(false);
+      subject.isFieldValid('person.lastName').should.equal(false);
       subject.getErrorMessagesForField('person.firstName').should == [
         'First and/or last name required'
       ];
@@ -54,72 +54,151 @@ describe("Validator", function() {
 
   describe("Validators", function() {
     describe("Required fields", function() {
-      it("validates required fields", function() {
-        let data = {
-          person: {
-            firstName: null,
-            lastName: "     "
-          }
+      let data = {
+        person: {
+          firstName: null,
+          lastName: null
         }
+      }
 
-        let rules = [
-          {
-            validator: "required",
-            fields: [ "person.firstName", "person.lastName" ],
-          }
-        ]
+      let rules = [
+        {
+          validator: "required",
+          fields: [ "person.firstName", "person.lastName" ],
+        }
+      ]
 
-        let subject = new Validator(rules, data);
+      let subject = new Validator(rules, data);
+
+      it("validates null", function() {
         subject.validate();
+        subject.isValid().should.equal(false);
+      });
 
-        subject.isValid().should == false;
-
-        data.person = {
-          firstName: "FIRST",
-          lastName: " NAME "
-        };
+      it("validates empty string", function() {
+        data.person.firstName = "     ";
+        data.person.lastName = "   \n   ";
 
         subject.validate();
+        subject.isValid().should.equal(false);
+      });
 
-        subject.isValid().should == true;
+      it("validates filled string", function() {
+        data.person.firstName = "FIRST";
+        data.person.lastName = " NAME ";
+
+        subject.validate();
+        subject.isValid().should.equal(true);
       });
     });
-  });
 
-  describe("Numbers", function() {
-    let data = {
-      person: {
+    describe("Numbers", function() {
+      let data = {
+        person: {
+        }
       }
-    }
 
-    let rules = [
-      {
-        validator: "number",
-        fields: [ "person.age" ]
-      }
-    ]
+      let rules = [
+        {
+          validator: "number",
+          fields: [ "person.age" ]
+        }
+      ]
 
-    let subject = new Validator(rules, data);
+      let subject = new Validator(rules, data);
 
-    it("validates null", function() {
-      data.person.age = null;
+      it("validates undefined", function() {
+        subject.validate();
+        subject.isValid().should.equal(false);
+      });
 
-      subject.validate();
-      subject.isValid().should == false;
+      it("validates null", function() {
+        data.person.age = null;
+
+        subject.validate();
+        subject.isValid().should.equal(false);
+      });
+
+      it("validates string", function() {
+        data.person.age = "1abc";
+
+        subject.validate();
+        subject.isValid().should.equal(false);
+      });
+
+      it("validates string with number", function() {
+        data.person.age = "1";
+
+        subject.validate();
+        subject.isValid().should.equal(true);
+      });
+
+      it("validates number", function() {
+        data.person.age = 1;
+
+        subject.validate();
+        subject.isValid().should.equal(true);
+      });
     });
 
-    it("validates string", function() {
-      data.person.age = "1";
+    describe("Length", function() {
+      let data = {
+        person: {
+        }
+      }
 
-      subject.validate();
-      subject.isValid().should == false;
-    });
+      let rules = [
+        {
+          validator: "length",
+          fields: [ "person.name" ],
+          gte: 2,
+          lte: 10
+        }
+      ]
 
-    it("validates number", function() {
-      data.person.age = 1;
+      let subject = new Validator(rules, data);
 
-      subject.validate();
-      subject.isValid().should == true;
+      it("validates undefined", function() {
+        subject.validate();
+        subject.isValid().should.equal(false);
+      });
+
+      it("validates null", function() {
+        data.person.name = null;
+
+        subject.validate();
+        subject.isValid().should.equal(false);
+      });
+
+      it("validates incorrect string length", function() {
+        data.person.name = "";
+
+        subject.validate();
+        subject.isValid().should.equal(false);
+
+        data.person.name = "1";
+
+        subject.validate();
+        subject.isValid().should.equal(false);
+
+        data.person.name = "01234567890";
+
+        subject.validate();
+        subject.isValid().should.equal(false);
+      });
+
+      it("validates correct string length", function() {
+        data.person.name = "01";
+
+        subject.validate();
+        subject.isValid().should.equal(true);
+
+        data.person.name = "0123456789";
+
+        subject.validate();
+        subject.isValid().should.equal(true);
+      });
+
     });
   });
 });

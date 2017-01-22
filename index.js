@@ -16,12 +16,12 @@ const VALIDATOR_FUNCTIONS = {
   },
 
   number: function(value, options) {
-    var valid = (value || "").toString().match(/^[0-9]+$/m);
+    var valid = (value || "").toString().match(/^[0-9]+$/m) != null;
 
-    valid = valid && options.gt && value > options.gt;
-    valid = valid && options.gte && value >= options.gte;
-    valid = valid && options.lt && value < options.lt;
-    valid = valid && options.lte && value <= options.lte;
+    valid = valid && (!options.gt || (options.gt && value > options.gt));
+    valid = valid && (!options.gte || (options.gte && value >= options.gte));
+    valid = valid && (!options.lt || (options.lt && value < options.lt));
+    valid = valid && (!options.lte || (options.lte && value <= options.lte));
 
     return valid;
   },
@@ -29,10 +29,10 @@ const VALIDATOR_FUNCTIONS = {
   length: function(value, options) {
     var valid = true;
 
-    valid = valid && value && options.gt && value.length > options.gt;
-    valid = valid && value && options.gte && value.length >= options.gte;
-    valid = valid && value && options.lt && value.length < options.lt;
-    valid = valid && value && options.lte && value.length <= options.lte;
+    valid = valid && (!options.gt || (value && options.gt && value.length > options.gt));
+    valid = valid && (!options.gte || (value && options.gte && value.length >= options.gte));
+    valid = valid && (!options.lt || (value && options.lt && value.length < options.lt));
+    valid = valid && (!options.lte || (value && options.lte && value.length <= options.lte));
 
     return valid;
   },
