@@ -1,0 +1,30 @@
+{
+  "name": "validator-js",
+  "version": "0.0.1",
+  "description": "Validator class for form validation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/dkln/validator-js.git"
+  },
+  "keywords": [
+    "validation",
+    "forms",
+    "javascript",
+    "npm"
+  ],
+  "author": "Diederick Lawson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dkln/validator-js/issues"
+  },
+  "homepage": "https://github.com/dkln/validator-js#readme",
+  "dependencies": {
+    "isarray": "^2.0.1",
+    "object-path": "^0.11.3",
+    "trim": "0.0.1"
+  }
+}
