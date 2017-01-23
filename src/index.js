@@ -34,7 +34,6 @@ const VALIDATORS = {
   }
 }
 
-
 export default class {
   constructor(rules, data) {
     this.rules = rules;
@@ -52,7 +51,7 @@ export default class {
 
     this.rules.forEach((rule, index) => {
       // does rule have an `if` condition?
-      if(skipRunRule(rule, this.event, this.data)) next;
+      if(skipRunRule(rule, this.event, this.data)) return;
 
       // walk over fields
       rule.fields.forEach((field) => {
@@ -60,7 +59,7 @@ export default class {
         let fieldValue = ObjectPath.get(this.data, field);
 
         // skip?
-        if(skipRuleOnField(rule, field, fieldValue)) next;
+        if(skipRuleOnField(rule, field, fieldValue)) return;
 
         if(!this.results[field])
           this.results[field] = {};

@@ -45,7 +45,7 @@ var rules = [
   }
 ];
 
-validator = new Validator(data, rules);
+validator = new Validator(rules, data);
 validator.validate();
 ```
 
