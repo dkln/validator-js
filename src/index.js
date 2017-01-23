@@ -145,10 +145,10 @@ function skipRuleOnField(rule, field, fieldValue) {
 
 function isFieldValid(rule, data, value) {
   if(rule.validator == "custom") {
-    return rule.validation(data);
+    return !!(rule.validation(data));
 
   } else if(VALIDATORS[rule.validator]) {
-    return VALIDATORS[rule.validator](value, rule);
+    return !!(VALIDATORS[rule.validator](value, rule));
 
   } else {
     throw `Unknown validator ${rule.validator}`;

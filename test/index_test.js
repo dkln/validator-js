@@ -1,4 +1,4 @@
-import Validator from "../index";
+import Validator from "../src/index";
 
 describe("Validator", function() {
   describe("Simple validation", function() {
