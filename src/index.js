@@ -142,7 +142,7 @@ function skipRunRule(rule, event, data) {
 }
 
 function skipRuleOnField(rule, field, fieldValue) {
-  return rule.allowBlank && !isPresent(fieldValue);
+  return rule.allowBlank && !isPresent(fieldValue.toString());
 }
 
 function isFieldValid(rule, data, value) {
