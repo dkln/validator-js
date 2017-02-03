@@ -4,11 +4,13 @@ var ObjectPath = require("object-path");
 
 const VALIDATORS = {
   required: function(value) {
-    return isPresent(value);
+    return isPresent(value.toString());
   },
 
   number: function(value, options) {
     var valid = (value || "").toString().match(/^[0-9]+$/m) != null;
+
+    value = parseFloat(value);
 
     valid = valid && (!options.gt || (options.gt && value > options.gt));
     valid = valid && (!options.gte || (options.gte && value >= options.gte));
