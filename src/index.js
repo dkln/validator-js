@@ -137,7 +137,7 @@ function isPresent(value) {
     return value.length > 0;
 
   } else {
-    return value && !(typeof(value) === "undefined") && trim(value) != "";
+    return value && !(typeof(value) === "undefined") && trim(value.toString()) != "";
 
   }
 }
