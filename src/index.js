@@ -4,7 +4,7 @@ var ObjectPath = require("object-path");
 
 const VALIDATORS = {
   required: function(value) {
-    return isPresent(value.toString());
+    return isPresent(value);
   },
 
   number: function(value, options) {
@@ -130,10 +130,15 @@ export default class {
 }
 
 function isPresent(value) {
-  if(isArray(value)) {
+  if(typeof value === "undefined") {
+    return false;
+
+  } else if(isArray(value)) {
     return value.length > 0;
+
   } else {
     return value && !(typeof(value) === "undefined") && trim(value) != "";
+
   }
 }
 
@@ -142,7 +147,7 @@ function skipRunRule(rule, event, data) {
 }
 
 function skipRuleOnField(rule, field, fieldValue) {
-  return rule.allowBlank && !isPresent(fieldValue.toString());
+  return rule.allowBlank && !isPresent(fieldValue);
 }
 
 function isFieldValid(rule, data, value) {
